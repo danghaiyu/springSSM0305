@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.accp.dao.AirDao">
+ <select id="findAll" resultMap="resultair">
+  SELECT `air`.`id`,`district`.`name`,`monitorTime`,`pm10`,`pm2.5`,`monitoringSation`,`lastMdifyTme` FROM  `air`,`district`  WHERE `air`.`districtId`=`district`.`id`
+ </select>
+ <select id="findById" resultMap="resultair">
+ SELECT `air`.`id`,`district`.`name`,`monitorTime`,`pm10`,`pm2.5`,`monitoringSation`,`lastMdifyTme` FROM  `air`,`district`  WHERE `air`.`districtId`=`district`.`id` AND `air`.`id`=#{air.id}
+ </select>
+ <insert id="insert">
+ INSERT INTO `air`(`districtId`,`monitorTime`,`pm10`,`pm2.5`,`monitoringSation`,`lastMdifyTme`) VALUES(#{district.id},#{monitorTime},#{pm10},#{pm2},#{monitoringSation},#{lastMdifyTme})
+ </insert>
+ <update id="update">
+ UPDATE `air` SET `districtId`=#{district.id},`monitorTime`=#{monitorTime},`pm10`=#{pm10},`pm2.5`=#{pm2},`monitoringSation`=#{monitoringSation},`lastMdifyTme`=#{lastMdifyTme} WHERE `id`=#{id}
+ </update>
+ <delete id="delete">
+ delete from air where id=#{id}
+ </delete>
+ <select id="findDistrict" resultType="District">
+ select * from district
+ </select>
+<resultMap type="Air" id="resultair">
+    <id property="id" column="id"/>
+    <result property="monitorTime" column="monitorTime"/>
+    <result property="pm10" column="pm10"/>
+ 	<result property="pm2" column="pm2.5"/>
+    <result property="monitoringSation" column="monitoringSation"/>
+    <result property="lastMdifyTme" column="lastMdifyTme"/>
+ <association property="district" javaType="District">
+ <id property="id" column="id"/>
+ <result property="name" column="name"/>
+ </association>
+ </resultMap>
+ </mapper>
